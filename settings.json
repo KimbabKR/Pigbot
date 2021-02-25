@@ -1,1 +1,7 @@
-{}
+{
+  "shard" : {
+        "totalShards" : 1,
+        "respawn" : true,
+        "token" : ""
+    }
+}
