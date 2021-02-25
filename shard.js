@@ -1,5 +1,6 @@
 const { ShardingManager } = require('discord.js')
-const manager = new ShardingManager('./bot.js', auto)
+const config = require("./config.json")
+const manager = new ShardingManager('./bot.js', config.shard)
 
 manager.spawn(this.totalShards)
 manager.on('launch', shard => {
