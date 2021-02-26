@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 
 
 module.exports = {
-    create: function (client, option) {
+    create: function (client) {
 
         app.get('/api/', function (_req, res) {
             res.send('{ "message" : "Hello World" }');
@@ -15,11 +15,11 @@ module.exports = {
         });
 
         app.get('/', function (_req, res) {
-            res.send('여기왜 옴?');
+            res.send('/api 로 가봐');
         });
 
         app.listen(3000, () => {
-            console.log("Server is Ready!");
+            console.log("[System] WebServer is Ready!");
         });
     }
 };

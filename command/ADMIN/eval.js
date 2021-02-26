@@ -1,44 +1,77 @@
 const Discord = require("discord.js");
-exports.run = async (client, msg, args, prefix) => {
+const util = require('util');
+
+
+exports.run = async (client, msg, args, prefix, settings) => {
   if (!client.devs.includes(msg.author.id))
-    return msg.reply("이 명령어는 꿀꿀봇 관리자만 사용할 수 있습니다."); // bot.js에서 client.devs를 저장한 것을 불러와 포함하지 않으면 해당 메세지로 답변해줍시다.
-  const coode = args.join(" ");
-  const module = 'const Discord = require("discord.js")';
-  if (!coode) return msg.reply("실행할 코드를 입력해주세요.");
-  new Promise(res => res(eval(coode)))
-    .then(code => {
-      // Promise를 생성하여 eval(coode)를 해준 후 then을 사용하여 그것들을 code로 선언해줍시다.
-      if (typeof code !== "string")
-        code = require("util").inspect(code, { depth: 0 }); // 해당 코드가 스트링이 아니라면 code는 util 이라는 모듈 안에 있는 inspect라는 함수를 이용하여 정리 해줍시다.
-      /**
-       *  util.inspect에 대해 자세히 알고 싶다면 아래의 링크를 클릭해주세요.
-       * https://nodejs.org/api/util.html#util_util_inspect_object_options
-       * */
-      let evaled = new Discord.MessageEmbed()
-        .setTitle("✅  Code Execution")
-        .setColor("7289DA")
-        .addField(
-          "📥 **Input**",
-          `\`\`\`js\n${module}\n\n${coode}\`\`\``,
-          false
-        )
-        .addField("📤 **Output**", `\`\`\`js\n${code}\`\`\``, false);
-      msg.reply(evaled);
-    })
-    .catch(e => {
-      // 해당 코드에서 에러가 발생하면 캐치를 하고 그 에러 값을 e로 선언해줍시다.
-      let evaled = new Discord.MessageEmbed()
-        .setTitle("❎  Code Execution")
-        .setColor("RED")
-        .setDescription(`\`\`\`js\n${e}\`\`\``);
-      msg.reply(evaled);
-    });
-};
+    return msg.reply("이 명령어는 Dev 권한이 필요합니다"); // bot.js에서 client.devs를 저장한 것을 불러와 포함하지 않으면 해당 메세지로 답변해줍시다.
+        let input = args.slice(0).join(' ');
+        if (!input) return msg.channel.send('내용을 써 주세요!');
+        const code = `
+const Discord = require('discord.js');
+const fs = require('fs');
+const util = require('util');
+const os = require('os');
+const dotenv = require('dotenv');
+const reload = require("self-reload-json");
+const User = new reload("./user-data.json");
+
+${input}`;
+        const embed = new Discord.MessageEmbed()
+            .setTitle(`Evaling...`)
+            .setColor(0xffff00)
+            .addField('Input', '```js\n' + args.slice(0).join(' ') + '\n```')
+            .setFooter(msg.author.tag, msg.author.avatarURL({
+                dynamic: true
+            }))
+            .setTimestamp()
+        let m = await msg.channel.send({
+            embed: embed
+        });
+        try {
+            let output = eval(code);
+            let type = typeof output;
+            if (typeof output !== "string") {
+                output = util.inspect(output);
+            }
+            if (output.length >= 1020) {
+                output = `${output.substr(0, 1010)}...`;
+            }
+            output = output.replace(new RegExp(settings.token, 'gi'), 'Secret');
+            const embed2 = new Discord.MessageEmbed()
+                .setTitle('Eval result')
+                .setColor(0x00ffff)
+                .addField('Input', '```js\n' + args.slice(0).join(' ') + '\n```')
+                .addField('Output', '```js\n' + output + '\n```')
+                .addField('Type', '```js\n' + type + '\n```')
+                .setFooter(msg.author.tag, msg.author.avatarURL({
+                    dynamic: true
+                }))
+                .setTimestamp()
+            m.edit({
+                embed: embed2
+            });
+        } catch (err) {
+            const embed3 = new Discord.MessageEmbed()
+                .setTitle('Eval error...')
+                .setColor(0xff0000)
+                .addField('Input', '```js\n' + args.slice(0).join(' ') + '\n```')
+                .addField('Error', '```js\n' + err + '\n```')
+                .setFooter(msg.author.tag, msg.author.avatarURL({
+                    dynamic: true
+                }))
+                .setTimestamp()
+            m.edit({
+                embed: embed3
+            });
+        }
+}
 
 exports.config = {
   name: "코드",
   aliases: ["eval"],
-  category: ["관리자"],
+  category: ["Dev"],
   des: ["코드 실행합니다."],
-  use: ["ㄲ 코드 <코드>"]
+  use: ["#코드 <코드>"]
 };
+
