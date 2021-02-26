@@ -13,8 +13,6 @@ const fs = require('fs');
 const util = require('util');
 const os = require('os');
 const dotenv = require('dotenv');
-const reload = require("self-reload-json");
-const User = new reload("./user-data.json");
 
 ${input}`;
         const embed = new Discord.MessageEmbed()
