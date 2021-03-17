@@ -4,30 +4,12 @@ const moment = require("moment-timezone");
 
 
 exports.run = async (client, msg, args, prefix) => {
-  fetch("http://rank.search.naver.com/rank.js").then(r =>
-    r.json().then(r => {
-      let updated = moment(new Date(r.ts))
-        .locale("ko")
-        .format("llll");
-      console.log(r.data[0].data);
-      let data = r.data[0].data;
       let NaverRanking = new Discord.MessageEmbed()
-        .setTitle("네이버 실시간 검색어 순위")
+        .setTitle("네이버 실시간 검색어 순위 서비스 종료 안내")
+        .setDescription("네이버 실시간 검색어 순위 서비스 종료되었습니다.\n4월 1일에 이 명령어가 삭제될 예정입니다.")
         .setColor("#83ff7b")
         .setFooter("이런게 왜 사용할까?");
-      for (let i = 0; i < 10; i++) {
-        NaverRanking.addField(
-          `${data[i].rank}위`,
-          `[${
-            data[i].keyword
-          }](https://search.naver.com/search.naver?where=nexearch&query=${encodeURI(
-            data[i].keyword
-          )}&sm=top_lve.agallgrpmamsi0en0sp0&ie=utf8)`
-        );
-      }
       msg.channel.send(NaverRanking);
-    })
-  );
 };
 
 exports.config = {

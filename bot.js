@@ -1,10 +1,8 @@
 const { Client, Collection } = require('discord.js');
 const Discord = require('discord.js');
-const fs = require('fs'),
 const axios = require('axios').default;
-require('dotenv').config();
 const client = new Discord.Client();
-
+require('dotenv').config();
 /*
     DataBase
 */
@@ -13,8 +11,9 @@ const DBClient = new MongoDB.MongoClient(process.env.DBPW, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
+client.db = undefined
 DBClient.connect().then(() => {
-    client.db.user = DBClient.db('unit').collection('user');
+    client.db = DBClient.db('bot').collection('user')
 });
 
 /*
@@ -29,10 +28,7 @@ client.on('message', async message => {
   DokdoHandler.run(message) // try !dokdo
 })
 
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    client.commands.set(command.name, command);
-}
+
 /*
     Handlers
 */
@@ -40,8 +36,6 @@ for (const file of commandFiles) {
 const { readdirSync } = require('fs');
 const fs = require('fs');
 
-client.emotes = require('./../emoji.json');
-client.colors = require('./../color.json');
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 client.devs = [
@@ -162,7 +156,7 @@ client.on('ready', () => {
                 token: process.env.KTOKEN
             }
         });
-    }, 200000);
+    }, 100000);
 });
 
 

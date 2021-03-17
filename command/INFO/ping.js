@@ -1,14 +1,21 @@
 const Discord = require("discord.js")
-exports.run = async (client, msg, args, prefix) => {
-    let embed = new Discord.MessageEmbed() // var -> let으로 수정하였습니다.
-        .setTitle("봇상태")
-        .setDescription("퐁!")
-        .setColor("BLUE")
-        .setFooter("Powered by 꿀꿀봇")
-        .setTimestamp()
-        .addField("웹소겟 지연시간", `${client.ws.ping}ms`)
-        .addField("봇상태: ", `온라인`)
-    msg.reply(embed)
+exports.run = async (client, message, args, prefix) => {
+        const embed = new Discord.MessageEmbed()
+            .setTitle(`${client.emojis.cache.find(x => x.name == 'loadingCirclebar')} Pinging...`)
+            .setColor(0xffff00)
+            .setTimestamp()
+        let m = await message.channel.send(embed);
+        const embed2 = new Discord.MessageEmbed()
+            .setTitle('PONG!')
+            .setColor(0x00ffff)
+            .setThumbnail('https://i.imgur.com/1Gk4tOj.png')
+            .addField('Latency', `${m.createdAt - message.createdAt}ms`, true)
+            .addField('API Latency', `${client.ws.ping}ms`, true)
+            .setFooter(message.author.tag, message.author.avatarURL({
+                dynamic: true
+            }))
+            .setTimestamp()
+        m.edit(embed2);
 }
 exports.config = {
     name: '핑',

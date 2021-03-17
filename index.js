@@ -1,5 +1,5 @@
 const Bot = require('./shard.js')
-const Web = require('./web.js')
+const keepAlive = require('./web')
 
 Bot()
-Web()
+keepAlive();
