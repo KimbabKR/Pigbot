@@ -21,7 +21,7 @@ module.exports = async (client) => {
           },
         })
         break
-	  case 2:
+      case 2:
         client.user.setPresence({
           status: 'online',
           activity: {
@@ -33,7 +33,7 @@ module.exports = async (client) => {
       }
     }, 10000)
   })
-    setTimeout(async () => {
-      client.status = '정상 운영중...'
-    }, 3000)
+  setTimeout(async () => {
+    client.status = '정상 운영중...'
+  }, 3000)
 }

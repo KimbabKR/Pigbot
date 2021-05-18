@@ -10,7 +10,7 @@ module.exports = async (client) => {
   )
 
   DBClient.connect().then(() => {
-	client.db = {}
+    client.db = {}
     client.db = DBClient.db('bot')
     client.db.user = DBClient.db('bot').collection('user')
     client.db.guild = DBClient.db('bot').collection('guilds')
