@@ -17,7 +17,7 @@ exports.run = async (client, msg, args, prefix) => {
 
 exports.config = {
   name: "docs",
-  aliases: ["djsdocs"],
+  aliases: ["djsdocs", "도큐"],
   category: ["INFO"],
   des: ["Discord.js 사용하는 유저에게 유익한 문서입니다."],
   use: ["ㄲ docs <query>"]
