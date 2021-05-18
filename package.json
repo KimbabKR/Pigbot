@@ -1,7 +1,7 @@
 {
   "name": "Pigbot",
-  "version": "2.5.6",
-  "description": "",
+  "version": "2.6",
+  "description": "...",
   "main": "./src/index.js",
   "scripts": {
     "start": "node ./src/struct/Shard.js",
