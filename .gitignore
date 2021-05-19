@@ -99,6 +99,6 @@ dist
 
 # DynamoDB Local files
 .dynamodb/
-
+goorm.manifest
 # TernJS port file
 .tern-port

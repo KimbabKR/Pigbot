@@ -16,6 +16,7 @@ module.exports = async (client, prefix, Modules) => {
           continue
         }
       } catch (e) {
+        console.log(e)
         console.error( client.color('red', '[Handler] ') + `${file} ❌ -> ${e}` )
         continue
       }

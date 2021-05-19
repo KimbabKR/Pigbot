@@ -15,6 +15,7 @@ client.status = '오프라인'
 
 // Discord bot client
 client.aliases = new Discord.Collection()
+client.commands = new Discord.Collection()
 client.developers = [
   '552103947662524416'
 ]
